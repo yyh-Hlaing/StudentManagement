@@ -1,59 +1,18 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StudentController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+use App\Http\Controllers\AttendanceController;
 
-//passing data from route to view
-Route::get('about',function(){
-    $name="yuyuhlaing";
-    $email="yyh123@gmail.com";
-    return view('aboutus')->with('name',$name)->with('email',$email);
-});
+Route::get('/', function () { return redirect()->route('students.index'); });
 
-
-Route::get('about/{name}/{id}',function($name,$id){
-    // $name="yuyuhlaing";
-    // $email="yyh123@gmail.com";
-    //no1. return view('aboutus')->with('name',$name)->with('email',$email);
-    //no2. return view('aboutus',compact('name','email'));
-    //no3. return view('aboutus',[
-    //     'name'=>$name,
-    //     'email'=>$email
-
-    // ]);
-    return view('aboutus', compact('name','id'));
-    });
-
-Route::view('contact-us/{name}/{id}','contactus');
-
-
-
-
-// Route::get('/',function(){
-//     return ('welcome from laravel');
-// });
-
-// Route::get('about',function(){
-//     return 'about us';
-// });
-
-
-// Route::prefix('details')->group(function(){
-//     Route::get('student',function(){
-//     return 'this is student';
-// })->name('student-details');
-// Route:: get('teacher',function(){
-//     return 'this is teacher';
-// })->name('teacher-details');
-// });
-
-// Route::get('student/{id}/{reg}',function($id,$reg){
-//     return 'studentId' . $id . 'Registration Number' . $reg;
-// });
-
-// Route::fallback(function(){
-//     return 'Please try again';
-// });
+Route::get('/students', [StudentController::class, 'index'])->name('students.index');
+Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
+Route::post('/students', [StudentController::class, 'store'])->name('students.store');
+Route::get('/students/{id}/edit', [StudentController::class, 'edit'])->name('students.edit');
+Route::put('/students/{id}', [StudentController::class, 'update'])->name('students.update');
+Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
+Route::get('/attendance', [AttendanceController::class, 'create'])->name('attendance.create');
+Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
