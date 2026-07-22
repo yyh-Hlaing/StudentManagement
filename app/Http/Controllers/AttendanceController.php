@@ -39,7 +39,7 @@ class AttendanceController extends Controller
                 ['status' => $status]                           
             );
         }
-
+            
         return redirect()->back()->with('success', $date . 'Updated Absent or Attendance or Late');
     }
 }

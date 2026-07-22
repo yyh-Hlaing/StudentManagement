@@ -7,7 +7,7 @@
 <body class="bg-gray-100 p-8">
     <div class="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md">
         <h2 class="text-2xl font-bold mb-6 text-center">student Register</h2>
-        <form action="{{ route('students.store') }}" method="POST">
+        <form action="{{ route('students.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-4">
                 <label class="block text-sm font-semibold mb-1">Name</label>
@@ -38,6 +38,13 @@
                 <label class="block text-sm font-semibold mb-1">Date of Birth</label>
                 <input type="date" name="dob" value="{{ old('dob') }}" class="w-full p-2 border rounded @error('dob') border-red-500 @enderror">
                 @error('dob') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-semibold mb-1">Upload Image</label>
+                <input type="file" name="image" class="w-full p-2 border rounded bg-white">
+                @error('image')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
             </div>
             <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Save</button>
         </form>
