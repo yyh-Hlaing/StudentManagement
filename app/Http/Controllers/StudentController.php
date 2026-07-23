@@ -9,10 +9,27 @@ use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller 
 {
-    public function index() 
+    public function index(Request $request)
     {
-        $students = Student::with('classRoom')->get();
-        return view('students.index', compact('students'));
+        $classes = ClassRoom::all();
+        $query = Student::with('classRoom');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('roll_no', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('class_room_id')) {
+            $query->where('class_room_id', $request->class_room_id);
+        }
+
+        $students = $query->latest()->paginate(10)->withQueryString();
+
+        return view('students.index', compact('students', 'classes'));
     }
 
     public function create() 
@@ -25,7 +42,7 @@ class StudentController extends Controller
     {
         $validated = $request->validate([
             'name'          => 'required|string|max:255',
-            'roll_no'       => 'required|string|unique:students,roll_no', // roll_no ကိုပါ unique ထည့်ထားပေးပါတယ်
+            'roll_no'       => 'required|string|unique:students,roll_no',
             'class_room_id' => 'required|exists:class_rooms,id',
             'email'         => 'required|email|unique:students,email',
             'dob'           => 'required|date',
