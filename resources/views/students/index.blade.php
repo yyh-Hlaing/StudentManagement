@@ -12,6 +12,9 @@
     
     <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
         <h1 class="text-2xl font-bold text-slate-800">Student Lists</h1>
+        <a href="{{ route('students.trash') }}" class="bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 py-2 rounded-lg transition text-sm flex items-center gap-1.5">
+            🗑️ Recycle Bin
+        </a>
         <a href="{{ route('students.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
             + Add New Student
         </a>

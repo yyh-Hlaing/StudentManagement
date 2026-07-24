@@ -31,6 +31,30 @@ class StudentController extends Controller
 
         return view('students.index', compact('students', 'classes'));
     }
+    public function trash()
+    {
+        $students = Student::onlyTrashed()->with('classRoom')->latest()->paginate(10);
+        return view('students.trash', compact('students'));
+    }
+    public function restore($id)
+    {
+        $student = Student::onlyTrashed()->findOrFail($id);
+        $student->restore();
+
+        return redirect()->route('students.trash')->with('success', 'Student restored successfully!');
+    }
+    public function forceDelete($id)
+    {
+        $student = Student::onlyTrashed()->findOrFail($id);
+
+        if ($student->image && Storage::disk('public')->exists($student->image)) {
+            Storage::disk('public')->delete($student->image);
+        }
+
+        $student->forceDelete();
+
+        return redirect()->route('students.trash')->with('success', 'Student permanently deleted!');
+    }
 
     public function create() 
     {
